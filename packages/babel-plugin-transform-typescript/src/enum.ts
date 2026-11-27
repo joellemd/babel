@@ -369,8 +369,11 @@ function computeConstantValue(
           ? prevMembers
           : ENUMS.get(path.scope.getBindingIdentifier(obj.name)!);
       if (!data) return;
-      // @ts-expect-error checked above
-      return data.get(prop.computed ? prop.value : prop.name);
+      return data.get(
+        expr.computed
+          ? (prop as t.StringLiteral).value
+          : (prop as t.Identifier).name,
+      );
     } else if (path.isIdentifier()) {
       const name = path.node.name;
 
